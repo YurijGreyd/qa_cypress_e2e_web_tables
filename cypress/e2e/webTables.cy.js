@@ -1,5 +1,6 @@
 /// <reference types='cypress' />
 import generateUser from '../support/generateUser';
+
 describe('Web Tables page', () => {
   const { firstName, lastName, age, email, salary, department } =
     generateUser();
@@ -41,15 +42,13 @@ describe('Web Tables page', () => {
     cy.contains('[role="row"]', email).within(() => {
       cy.get('[title="Delete"]').click();
     });
-
     cy.contains('[role="row"]', email).should('not.exist');
   });
 
   it('should allow deleting all workers', () => {
     cy.get('#addNewRecordButton').click();
-    cy.fillTheFormAndAddWorker(
-      firstName, lastName, email, age, salary, department
-    );
+    // eslint-disable-next-line max-len
+    cy.fillTheFormAndAddWorker(firstName, lastName, email, age, salary, department);
     cy.contains('.rt-noData', 'No rows found').should('not.exist');
 
     cy.get('[title="Delete"]').then((el) => {
@@ -61,12 +60,11 @@ describe('Web Tables page', () => {
     cy.contains('.rt-noData', 'No rows found').should('exist');
   });
 
-  it('should allow to find a user in the search field ' +
-    'and edit the user info', () => {
+  // eslint-disable-next-line max-len
+  it('should allow to find a user in the search field and edit the user info', () => {
     cy.get('#addNewRecordButton').click();
-    cy.fillTheFormAndAddWorker(
-      firstName, lastName, email, age, salary, department
-    );
+    // eslint-disable-next-line max-len
+    cy.fillTheFormAndAddWorker(firstName, lastName, email, age, salary, department);
 
     cy.contains('[role="row"]', newFirstName).should('not.exist');
     cy.get('#searchBox').type(firstName);
@@ -76,9 +74,8 @@ describe('Web Tables page', () => {
     });
 
     cy.clearTheForm();
-    cy.fillTheFormAndAddWorker(
-      newFirstName, newLastName, newEmail, newAge, newSalary, newDepartment
-    );
+    // eslint-disable-next-line max-len
+    cy.fillTheFormAndAddWorker(newFirstName, newLastName, newEmail, newAge, newSalary, newDepartment);
     cy.get('#searchBox').clear();
     cy.contains('[role="row"]', newFirstName)
       .should('contain.text', newFirstName)
@@ -92,36 +89,31 @@ describe('Web Tables page', () => {
   it('should have 9 workers in the table', () => {
     cy.addFiveUsers();
     cy.get('#addNewRecordButton').click();
-    cy.fillTheFormAndAddWorker(
-      firstName, lastName, email, age, salary, department
-    );
+    // eslint-disable-next-line max-len
+    cy.fillTheFormAndAddWorker(firstName, lastName, email, age, salary, department);
     cy.get('[role="rowgroup"]').each((el, i) => {
       if (i === 8) {
         cy.wrap(el).should('contain.text', firstName);
       }
-
       if (i === 9) {
         cy.wrap(el).should('contain.text', '');
       }
     });
   });
 
-  it(`should have correct pagination with 
-  ${firstName} as the last worker on page 2`, () => {
+  it(`should have correct pagination with ${firstName} as the last worker on page 2`, () => {
     cy.addFiveUsers();
     cy.get('#addNewRecordButton').click();
-    cy.fillTheFormAndAddWorker(
-      firstName, lastName, email, age, salary, department
-    );
+    // eslint-disable-next-line max-len
+    cy.fillTheFormAndAddWorker(firstName, lastName, email, age, salary, department);
     cy.get('[aria-label="rows per page"]').select('5');
     cy.get('[role="rowgroup"]').its('length').should('eq', 5);
-    cy.get('[aria-label="jump to page"]').type('2' + '{Enter}');
+    cy.get('[aria-label="jump to page"]').type('2{Enter}');
 
     cy.get('[role="rowgroup"]').each((el, i) => {
       if (i === 3) {
         cy.wrap(el).should('contain.text', firstName);
       }
-
       if (i === 4) {
         cy.wrap(el).should('contain.text', '');
       }
@@ -130,26 +122,30 @@ describe('Web Tables page', () => {
 
   it.only('should search by each column value', () => {
     cy.get('#addNewRecordButton').click();
-    cy.fillTheFormAndAddWorker(
-      firstName, lastName, email, age, salary, department
-    );
+    // eslint-disable-next-line max-len
+    cy.fillTheFormAndAddWorker(firstName, lastName, email, age, salary, department);
 
     cy.get('#searchBox').type(firstName);
-    cy.contains('[role="rowgroup"]', firstName).should('contain.text', email);
+    cy.contains('[role="row"]', firstName).should('contain.text', email);
     cy.get('#searchBox').clear();
+
     cy.get('#searchBox').type(lastName);
-    cy.contains('[role="rowgroup"]', lastName).should('contain.text', email);
+    cy.contains('[role="row"]', lastName).should('contain.text', email);
     cy.get('#searchBox').clear();
+
     cy.get('#searchBox').type(email);
-    cy.contains('[role="rowgroup"]', email).should('contain.text', lastName);
+    cy.contains('[role="row"]', email).should('contain.text', lastName);
     cy.get('#searchBox').clear();
+
     cy.get('#searchBox').type(age);
-    cy.contains('[role="rowgroup"]', email).should('contain.text', age);
+    cy.contains('[role="row"]', age).should('contain.text', email);
     cy.get('#searchBox').clear();
+
     cy.get('#searchBox').type(salary);
-    cy.contains('[role="rowgroup"]', email).should('contain.text', salary);
+    cy.contains('[role="row"]', salary).should('contain.text', email);
     cy.get('#searchBox').clear();
+
     cy.get('#searchBox').type(department);
-    cy.contains('[role="rowgroup"]', email).should('contain.text', department);
+    cy.contains('[role="row"]', department).should('contain.text', email);
   });
 });
